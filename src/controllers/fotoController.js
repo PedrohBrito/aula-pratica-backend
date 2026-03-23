@@ -1,6 +1,6 @@
-import fs from 'fs/promisses';
-import AlunoModel from '../models/AlunoModel';
-import { processarFoto, removerFoto } from '../utils/fotoHelper.js'
+import fs from 'fs';
+import AlunoModel from '../models/AlunoModel.js';
+import { ProcessarFoto, removerFoto } from '../utils/fotoHelper.js'
 
 export const verFoto = async (req, res) => {
     try {
@@ -49,7 +49,7 @@ export const uploadFoto = async (req, res) => {
             await fs.unlink(aluno.foto).catch(() => {});
         }
 
-        aluno.foto = await processarFoto(req.file.path);
+        aluno.foto = await ProcessarFoto(req.file.path);
         await aluno.atualizar();
 
         return res.status(201).json({ message: 'Aluno criado com sucesso!', foto: aluno.foto });
