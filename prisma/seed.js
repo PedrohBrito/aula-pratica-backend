@@ -18,8 +18,24 @@ async function main() {
 
     await prisma.aluno.createMany({
         data: [
-            { nome: 'Pedro' },
-            { nome: 'Nicolas' },
+            {
+                nome: 'Pedro',
+                escola: 'Escola Técnica Estadual',
+                turma: '3º Ano A',
+                foto: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pedro',
+            },
+            {
+                nome: 'Nicolas',
+                escola: 'Colégio Militar',
+                turma: '2º Ano B',
+                foto: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Nicolas',
+            },
+            {
+                nome: 'Ana Clara',
+                escola: 'Instituto Federal',
+                turma: '1º Ano C',
+                foto: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ana',
+            },
         ],
     });
 

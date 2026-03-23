@@ -15,8 +15,8 @@ export const criar = async (req, res) => {
 
         res.status(201).json({ message: 'Aluno criado com sucesso!', data });
     } catch (error) {
-        console.error('Erro ao criar Aluno:', error);
-        res.status(500).json({ error: 'Erro interno ao salvar o aluno.' });
+        console.error('Erro ao criar:', error);
+        res.status(500).json({ error: 'Erro interno ao salvar o registro do aluno.' });
     }
 };
 
@@ -30,8 +30,8 @@ export const buscarTodos = async (req, res) => {
 
         res.json(registros);
     } catch (error) {
-        console.error('Erro ao buscar:', error);
-        res.status(500).json({ error: 'Erro ao buscar alunos.' });
+        console.error('Erro ao buscar aluno:', error);
+        res.status(500).json({ error: 'Erro ao buscar registros de aluno.' });
     }
 };
 
@@ -46,7 +46,7 @@ export const buscarPorId = async (req, res) => {
         const aluno = await AlunoModel.buscarPorId(parseInt(id));
 
         if (!aluno) {
-            return res.status(404).json({ error: 'Registro de aluno não encontrado.' });
+            return res.status(404).json({ error: 'Registro não encontrado.' });
         }
 
         res.json({ data: aluno });
@@ -69,20 +69,19 @@ export const atualizar = async (req, res) => {
         const aluno = await AlunoModel.buscarPorId(parseInt(id));
 
         if (!aluno) {
-            return res.status(404).json({ error: 'Registro de aluno não encontrado para atualizar.' });
+            return res.status(404).json({ error: 'Registro não encontrado para atualizar.' });
         }
 
         if (req.body.nome !== undefined) aluno.nome = req.body.nome;
-        if (req.body.estado !== undefined) aluno.escola = req.body.escola;
+        if (req.body.escola !== undefined) aluno.escola = req.body.escola;
         if (req.body.turma !== undefined) aluno.turma = req.body.turma;
-        if (req.body.foto !== undefined) aluno.foto = req.body.foto;
 
         const data = await aluno.atualizar();
 
-        res.json({ message: `O registro do aluno "${data.nome}" foi atualizado com sucesso!`, data });
+        res.json({ message: `O registro "${data.nome}" foi atualizado com sucesso!`, data });
     } catch (error) {
         console.error('Erro ao atualizar:', error);
-        res.status(500).json({ error: 'Erro ao atualizar aluno.' });
+        res.status(500).json({ error: 'Erro ao atualizar registro.' });
     }
 };
 
@@ -95,14 +94,17 @@ export const deletar = async (req, res) => {
         const aluno = await AlunoModel.buscarPorId(parseInt(id));
 
         if (!aluno) {
-            return res.status(404).json({ error: 'Registro de aluno não encontrado para deletar.' });
+            return res.status(404).json({ error: 'Registro não encontrado para deletar.' });
         }
 
         await aluno.deletar();
 
-        res.json({ message: `O registro do aluno"${aluno.nome}" foi deletado com sucesso!`, deletado: aluno });
+        res.json({
+            message: `O registro "${aluno.nome}" foi deletado com sucesso!`,
+            deletado: aluno,
+        });
     } catch (error) {
         console.error('Erro ao deletar:', error);
-        res.status(500).json({ error: 'Erro ao deletar aluno.' });
+        res.status(500).json({ error: 'Erro ao deletar registro.' });
     }
 };
